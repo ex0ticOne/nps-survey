@@ -1,0 +1,14 @@
+name: API NPS
+version: 0.1.0
+
+dependencies:
+  kemal:
+    github: kemalcr/kemal
+  webmock:
+    github: manastech/webmock.cr
+  db:
+    github: crystal-lang/crystal-db
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3
+  email:
+    github: arcage/crystal-email

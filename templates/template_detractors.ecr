@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #007bff;
+        }
+        p {
+            max-width: 500px;
+            font-size: 18px;
+            text-align: left;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .feedback{
+          width: 100%%;
+          height: 200px;
+          font-size: 18px;
+        }
+        .submit-button{
+          background: gold;
+          font-size: 24px;
+          width: 100%%;
+          height: 40px;
+          font-weight: bold;
+          border: none;
+          color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color: blue">We apologize for any problems</h1>
+	<br>
+    <p>Customer feedback is what drives us to be better.</p>
+	<br>
+	<h2>Tell us what happened in details. We are going to reach you as soon as possible.</h2>
+	
+	<form action="/send-feedback" method="post">
+      <input type="hidden" name="ticket" value=<%= ticket %> />
+	  <div>
+	    <textarea name="feedback" class="feedback" type="text" placeholder="Tell us about your problem and click 'Submit'" rows="20"></textarea>
+	  </div>
+	  <div>
+	    <button class="submit-button" type="submit">Submit</button>
+	  </div>
+	</form>
+</body>
+</html>

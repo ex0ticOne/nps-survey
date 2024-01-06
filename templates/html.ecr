@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Survey</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f0f0f0; padding: 20px; line-height:1.5;">
+
+    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
+        <tr>
+            <td style="padding: 20px;">
+                <h1 style="color: #333333; text-align: center;">Considering a 0 to 10 scale, how likely would you recommend our company to a friend? </h1>
+                <p style="color: #666666; text-align: center;">It's easy to answer, just click on a rate below!</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 0;">
+                <table align="center" border="2" cellpadding="0" cellspacing="0" width="100%%" style="border-collapse: collapse;">
+                    <tr>
+                        <td style="width: 40px; text-align: center; padding: 10px; background-color: red;">
+                            <a href="<%= base_url %>/answer-nps?ticket=<%= ticket %>&rate=0&hash=<%= hash %>" style="text-decoration: none; color: white; font-weight: bold;">0</a>
+                        </td>
+                        <td style="width: 40px; text-align: center; padding: 10px; background-color: red;">
+                            <a href="<%= base_url %>/answer-nps?ticket=<%= ticket %>&rate=1&hash=<%= hash %>" style="text-decoration: none; color: white; font-weight: bold;">1</a>
+                        </td>
+                        <td style="width: 40px; text-align: center; padding: 10px; background-color: red;">
+                            <a href="<%= base_url %>/answer-nps?ticket=<%= ticket %>&rate=2&hash=<%= hash %>" style="text-decoration: none; color: white; font-weight: bold;">2</a>
+                        </td>
+                        <td style="width: 40px; text-align: center; padding: 10px; background-color: red;">
+                            <a href="<%= base_url %>/answer-nps?ticket=<%= ticket %>&rate=3&hash=<%= hash %>" style="text-decoration: none; color: white; font-weight: bold;">3</a>
+                        </td>
+                        <td style="width: 40px; text-align: center; padding: 10px; background-color: red;">
+                            <a href="<%= base_url %>/answer-nps?ticket=<%= ticket %>&rate=4&hash=<%= hash %>" style="text-decoration: none; color: white; font-weight: bold;">4</a>
+                        </td>
+                        <td style="width: 40px; text-align: center; padding: 10px; background-color: red;">
+                            <a href="<%= base_url %>/answer-nps?ticket=<%= ticket %>&rate=5&hash=<%= hash %>" style="text-decoration: none; color: white; font-weight: bold;">5</a>
+                        </td>
+                        <td style="width: 40px; text-align: center; padding: 10px; background-color: red;">
+                            <a href="<%= base_url %>/answer-nps?ticket=<%= ticket %>&rate=6&hash=<%= hash %>" style="text-decoration: none; color: white; font-weight: bold;">6</a>
+                        </td>
+                        <td style="width: 40px; text-align: center; padding: 10px; background-color: goldenrod;">
+                            <a href="<%= base_url %>/answer-nps?ticket=<%= ticket %>&rate=7&hash=<%= hash %>" style="text-decoration: none; color: white; font-weight: bold;">7</a>
+                        </td>
+                        <td style="width: 40px; text-align: center; padding: 10px; background-color: goldenrod;">
+                            <a href="<%= base_url %>/answer-nps?ticket=<%= ticket %>&rate=8&hash=<%= hash %>" style="text-decoration: none; color: white; font-weight: bold;">8</a>
+                        </td>
+                        <td style="width: 40px; text-align: center; padding: 10px; background-color: forestgreen;">
+                            <a href="<%= base_url %>/answer-nps?ticket=<%= ticket %>&rate=9&hash=<%= hash %>" style="text-decoration: none; color: white; font-weight: bold;">9</a>
+                        </td>
+                        <td style="width: 40px; text-align: center; padding: 10px; background-color: forestgreen;">
+                            <a href="<%= base_url %>/answer-nps?ticket=<%= ticket %>&rate=10&hash=<%= hash %>" style="text-decoration: none; color: white; font-weight: bold;">10</a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 20px; text-align: center;">
+                <p style="color: #666666;">Thank You!</p>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
