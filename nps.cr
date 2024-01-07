@@ -75,9 +75,11 @@ DB.open "sqlite3://./db/db_NPS.sqlite3" do |db|
                halt env, status_code: 500
           end
 
-          valores = [Time.local, ticket, customer_email, hash] of DB::Any
-       
-          db.exec "INSERT INTO sent_surveys VALUES (?, ?, ?, ?)", args: valores
+          begin
+               db.exec "INSERT INTO sent_surveys VALUES (?, ?, ?, ?)", args: [Time.local, ticket, customer_email, hash] of DB::Any
+          rescue e
+               Log.warn(exception: e) {"Can't reach database for registering sent survey, check database file. This will make the answer-nps endpoint fail when trying to receive an answer (ticket and hash will not exist on sent_surveys)."}
+          end
 
      end
 
@@ -87,7 +89,7 @@ DB.open "sqlite3://./db/db_NPS.sqlite3" do |db|
           hash = env.params.query["hash"].to_s
 
           # Check if survey exists
-          query_survey_exists = db.query_one? "SELECT ticket FROM sent_surveys WHERE hash = ?", args: [hash] of DB::Any, as: String
+          query_survey_exists = db.query_one? "SELECT ticket FROM sent_surveys WHERE ticket = ? AND hash = ?", args: [ticket, hash] of DB::Any, as: String
 
           if query_survey_exists.nil?
                halt env, status_code: 400, response: "Survey doesn't exist"
@@ -98,6 +100,7 @@ DB.open "sqlite3://./db/db_NPS.sqlite3" do |db|
 
           if query_already_answered.nil?
 
+               #Avoid out-of-range rates
                unless rate_range.includes?(rate)
                     halt env, status_code: 400, response: "Rate outside the Net Promoter Score range"
                end
@@ -117,16 +120,20 @@ DB.open "sqlite3://./db/db_NPS.sqlite3" do |db|
                     render "./templates/template_detractors.ecr" 
                end 
           else
-
                render "./templates/template_already_answered.ecr"
           end
      end
 
      post "/send-feedback" do |env|
+          #Params from the form
           ticket = env.params.body["ticket"]
           feedback = env.params.body["feedback"]
 
-          db.exec "UPDATE survey_responses SET feedback = ? WHERE ticket = ?", args: [feedback, ticket] of DB::Any
+          begin
+               db.exec "UPDATE survey_responses SET feedback = ? WHERE ticket = ?", args: [feedback, ticket] of DB::Any
+          rescue e
+               Log.warn(exception: e) {"Customer feedback was not registered due to an unreachable database, check database file"}
+          end
 
           render "./templates/template_after_feedback.ecr"
      end
