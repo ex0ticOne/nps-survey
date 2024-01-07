@@ -1,2 +1,2 @@
 /lib/*
-/db/*
+/db/db_NPS_staging.sqlite3
