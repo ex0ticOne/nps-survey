@@ -1,11 +1,15 @@
 {
+    "live": 1,
+    "host": "your_host",
     "base_url": "http://127.0.0.1:3000",
-    "email_from": "from_email",
+    "from_company_name": "Company",
+    "email_from": "your_email",
     "email_username": "your_username",
     "email_password": "your_password",
     "helo_domain": "your_helo_domain",
     "smtp_server": "your_smtp_server",
     "smtp_port": 587,
+    "use_tls": true,
     "subject": "Survey NPS",
     "token": "91HEN1LKEN1OE18LS21ONOIEN"
 }

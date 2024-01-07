@@ -18,9 +18,11 @@ To expose the web service to the public, you can `proxy_pass` the localhost:port
 
 You tipically will want to use this integrated with some helpdesk solution such as ZenDesk, FreshDesk, etc. Configure the `/send-survey` endpoint combined with the `base_url` to be triggered when a ticket is marked as resolved, or any other action that results in the end of customer journey. You will need to pass the `token` that you defined on `config.json` as a header on this endpoint, otherwise you will get a 403 response.
 
-You are free to edit the ECR templates, but don't remove the tags embedded in URLs, because the webservice relies on them to work properly.
+Set `live` to 0 for debug purposes and 1 for a production environment. When changing this, you need to restart the web service.
 
-Maybe you will need to adjust some part of the code depending on your e-mail provider auth, see the docs of EMail shard [here](https://github.com/arcage/crystal-email). 
+You are free to edit the ECR templates to suit your needs, but don't remove the tags embedded on the URLs, because the webservice relies on them to work properly (endpoints to answer the surveys).
+
+
 
 In the future I want to make this project email provider agnostic (whole universe of email authentication) and database agnostic (not just SQLite3, but all SQL databases).
 

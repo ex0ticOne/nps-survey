@@ -1,4 +1,5 @@
 name: API NPS
+author: Ricardo Baptista (ex0ticOne)
 version: 0.1.0
 
 dependencies:
@@ -10,5 +11,7 @@ dependencies:
     github: crystal-lang/crystal-db
   sqlite3:
     github: crystal-lang/crystal-sqlite3
-  email:
-    github: arcage/crystal-email
+  carbon:
+    github: luckyframework/carbon
+  carbon_smtp_adapter:
+    github: luckyframework/carbon_smtp_adapter

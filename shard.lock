@@ -4,21 +4,37 @@ shards:
     git: https://github.com/sija/backtracer.cr.git
     version: 1.2.2
 
+  carbon:
+    git: https://github.com/luckyframework/carbon.git
+    version: 0.2.1
+
+  carbon_smtp_adapter:
+    git: https://github.com/luckyframework/carbon_smtp_adapter.git
+    version: 0.2.0
+
   db:
     git: https://github.com/crystal-lang/crystal-db.git
     version: 0.13.1
 
   email:
     git: https://github.com/arcage/crystal-email.git
-    version: 0.7.0
+    version: 0.6.4
 
   exception_page:
     git: https://github.com/crystal-loot/exception_page.git
     version: 0.3.1
 
+  habitat:
+    git: https://github.com/luckyframework/habitat.git
+    version: 0.4.8
+
   kemal:
     git: https://github.com/kemalcr/kemal.git
     version: 1.4.0
+
+  lucky_task:
+    git: https://github.com/luckyframework/lucky_task.git
+    version: 0.1.1
 
   radix:
     git: https://github.com/luislavena/radix.git
@@ -28,7 +44,15 @@ shards:
     git: https://github.com/crystal-lang/crystal-sqlite3.git
     version: 0.21.0
 
+  teeplate:
+    git: https://github.com/luckyframework/teeplate.git
+    version: 0.8.5
+
   webmock:
     git: https://github.com/manastech/webmock.cr.git
     version: 0.14.0
+
+  wordsmith:
+    git: https://github.com/luckyframework/wordsmith.git
+    version: 0.3.0
 

@@ -1,14 +1,24 @@
 require "kemal"
-require "email"
 require "json"
 require "log"
 require "ecr"
 require "db"
 require "sqlite3"
+require "./src/emails/email_nps.cr"
 
 # Config file
 config = File.open("config.json") do |file|
      JSON.parse(file)
+end
+
+macro render_template(template)
+     render "src/emails/templates/template_#{ {{template}} }.ecr"          
+end
+
+if config["live"] == 1
+     Log.info {"NPS webservice is running in LIVE MODE and it's ready to receive requests"}
+else
+     Log.info {"NPS webservice is running in DEBUG MODE. No e-mail will be sent to customers, the requests will only produce outputs to the logs"}
 end
 
 base_url = config["base_url"].to_s
@@ -50,33 +60,36 @@ DB.open "sqlite3://./db/db_NPS.sqlite3" do |db|
                halt env, status_code: 400, response: "Survey already sent"
           end
 
-          # Generate a hash to the survey, this avoids abuse
+          # Generate a hash to the survey, this avoids abuse from spammers
           hash_generator = Random.new
           hash = hash_generator.hex(16)
 
           begin
-               email_nps = EMail::Message.new
-               email_nps.from config["email_from"].to_s
-               email_nps.to customer_email
-               email_nps.subject config["subject"].to_s
-               email_nps.message render "./templates/html.ecr"
-     
-               smtp_config = EMail::Client::Config.new(config["smtp_server"].to_s, config["smtp_port"].as_i, helo_domain: config["helo_domain"].to_s)
-               #smtp_config.use_tls(EMail::Client::TLSMode::SMTPS)
-               smtp_config.use_auth(config["email_username"].to_s, config["email_password"].to_s)
-     
-               client = EMail::Client.new(smtp_config)
-
-               client.start do
-                    send(email_nps)
+               email_nps = EmailNps.new(
+                    from_company_name: config["from_company_name"].to_s,
+                    email_from: config["email_from"].to_s,
+                    base_url: config["base_url"].to_s,
+                    ticket: ticket,
+                    hash: hash,
+                    subject: config["subject"].to_s,
+                    customer_name: customer_name,
+                    customer_email: customer_email)
+               
+               if config["live"] == 1
+                    email_nps.deliver
+               else
+                    Log.info {email_nps.inspect}
                end
+
           rescue e
                Log.warn(exception: e) {"Failed to deliver e-mail, check your credentials on config.json."}
                halt env, status_code: 500
           end
 
           begin
-               db.exec "INSERT INTO sent_surveys VALUES (?, ?, ?, ?)", args: [Time.local, ticket, customer_email, hash] of DB::Any
+               if config["live"] == 1
+                    db.exec "INSERT INTO sent_surveys VALUES (?, ?, ?, ?)", args: [Time.local, ticket, customer_email, hash] of DB::Any
+               end
           rescue e
                Log.warn(exception: e) {"Can't reach database for registering sent survey, check database file. This will make the answer-nps endpoint fail when trying to receive an answer (ticket and hash will not exist on sent_surveys)."}
           end
@@ -113,14 +126,14 @@ DB.open "sqlite3://./db/db_NPS.sqlite3" do |db|
 
                # Render different templates based on the rate
                if promoters.includes?(rate)
-                    render "./templates/template_promoters.ecr"
+                    render_template "promoters"
                elsif neutral.includes?(rate) 
-                    render "./templates/template_neutral.ecr"  
+                    render_template "neutral"
                elsif detractors.includes?(rate) 
-                    render "./templates/template_detractors.ecr" 
+                    render_template "detractors"
                end 
           else
-               render "./templates/template_already_answered.ecr"
+               render_template "already_answered" 
           end
      end
 
@@ -135,7 +148,7 @@ DB.open "sqlite3://./db/db_NPS.sqlite3" do |db|
                Log.warn(exception: e) {"Customer feedback was not registered due to an unreachable database, check database file"}
           end
 
-          render "./templates/template_after_feedback.ecr"
+          render_template "after_feedback"
      end
 
      get "/send-feedback" do |env|
@@ -143,5 +156,9 @@ DB.open "sqlite3://./db/db_NPS.sqlite3" do |db|
           "Thank you for your feedback"
      end
 
+     if config["live"] == 1
+          Kemal.config.env = "production"
+     end
+     
      Kemal.run
 end
